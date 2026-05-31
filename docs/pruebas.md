@@ -13,7 +13,12 @@ GPIO18 -> resistencia 220/330 ohm -> LED -> GND
 Secuencia esperada:
 
 ```text
-0% -> 25% -> 50% -> 75% -> 100% -> 75% -> 50% -> 25% -> 0%
+pwm 0
+pwm 25
+pwm 50
+pwm 75
+pwm 100
+pwm_test
 ```
 
 Resultado:
@@ -36,7 +41,11 @@ GPIO21 -> resistencia 220/330 ohm -> LED PWM -> GND
 Secuencia esperada:
 
 ```text
-Stop -> sentido A 30% -> stop -> sentido B 30% -> stop
+motor f 30
+motor stop
+motor r 30
+motor stop
+motor_test
 ```
 
 Resultado:

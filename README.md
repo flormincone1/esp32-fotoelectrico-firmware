@@ -34,4 +34,23 @@ idf.py flash monitor
 - Proyecto ESP-IDF base creado.
 - Modulo PWM inicial.
 - Modulo motor inicial.
-- Secuencias de prueba por consola serial.
+- Comandos de prueba por consola serial.
+
+## Comandos por monitor serial
+
+Una vez cargado el firmware:
+
+```text
+help
+pwm 0
+pwm 25
+pwm 50
+pwm 100
+pwm_test
+motor f 30
+motor stop
+motor r 30
+motor_test
+```
+
+Para las primeras pruebas, usar LEDs con resistencia en lugar de conectar el puente H final.
