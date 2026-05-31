@@ -42,9 +42,10 @@ Una vez cargado el firmware:
 ```text
 Hola mundo desde ESP32-WROOM-32
 Proyecto: digitalizacion del experimento de efecto fotoelectrico
-Contador de vida: 0
-Contador de vida: 1
-Contador de vida: 2
+Blinky configurado en GPIO2
+Contador de vida: 0 | LED: ON
+Contador de vida: 1 | LED: OFF
+Contador de vida: 2 | LED: ON
 ```
 
-Si esto aparece en el monitor serial, la placa, el puerto, el flasheo y la comunicacion basica estan funcionando.
+El contador cambia cada 5 segundos. Si esto aparece en el monitor serial y el LED onboard alterna, la placa, el puerto, el flasheo, la salida GPIO y la comunicacion basica estan funcionando.
