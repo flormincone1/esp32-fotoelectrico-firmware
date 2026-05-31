@@ -31,26 +31,20 @@ idf.py flash monitor
 
 ## Estado
 
-- Proyecto ESP-IDF base creado.
-- Modulo PWM inicial.
-- Modulo motor inicial.
-- Comandos de prueba por consola serial.
+- Etapa actual: hello world.
+- Objetivo: validar compilacion, carga y monitor serial antes de probar PWM.
+- Modulos PWM y motor ya existen en el repositorio, pero todavia no se ejecutan desde `app_main`.
 
-## Comandos por monitor serial
+## Salida esperada
 
 Una vez cargado el firmware:
 
 ```text
-help
-pwm 0
-pwm 25
-pwm 50
-pwm 100
-pwm_test
-motor f 30
-motor stop
-motor r 30
-motor_test
+Hola mundo desde ESP32-WROOM-32
+Proyecto: digitalizacion del experimento de efecto fotoelectrico
+Contador de vida: 0
+Contador de vida: 1
+Contador de vida: 2
 ```
 
-Para las primeras pruebas, usar LEDs con resistencia en lugar de conectar el puente H final.
+Si esto aparece en el monitor serial, la placa, el puerto, el flasheo y la comunicacion basica estan funcionando.
