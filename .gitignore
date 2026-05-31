@@ -9,6 +9,7 @@ sdkconfig.old
 
 # Editor/system files
 .vscode/
+.clangd
 .idea/
 *.swp
 Thumbs.db

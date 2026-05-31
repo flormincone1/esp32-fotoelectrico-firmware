@@ -9,3 +9,6 @@
 #define APP_PWM_RES_BITS    10
 
 #define APP_TEST_DELAY_MS   1500
+
+#define APP_ONBOARD_LED_GPIO  2
+#define APP_STATUS_DELAY_MS   5000
