@@ -2,11 +2,9 @@
 #include "freertos/task.h"
 
 #include "pwm_control.h"
-#include "system_status.h"
 
 void app_main(void)
 {
-    system_status_init();
     pwm_control_init();
 
     while (true) {

@@ -1,19 +1,36 @@
 # Pruebas funcionales
 
-## Prueba 1 - PWM con LED
+## Prueba 1 - PWM con LED onboard
 
 Objetivo: verificar que el ESP32 genera PWM mediante LEDC.
 
-Conexion sugerida:
+Conexion:
 
 ```text
-GPIO18 -> resistencia 220/330 ohm -> LED -> GND
+No requiere conexion externa.
+PWM configurado sobre GPIO2, LED onboard.
 ```
 
 Secuencia esperada:
 
 ```text
 0% -> 25% -> 50% -> 75% -> 100% -> 75% -> 50% -> 25% -> 0%
+```
+
+Resultado:
+
+```text
+Pendiente de medir/probar.
+```
+
+## Prueba 1b - PWM con LED externo
+
+Objetivo: repetir la prueba PWM en protoboard luego de validar el LED onboard.
+
+Conexion sugerida:
+
+```text
+GPIO18 -> resistencia 220/330 ohm -> LED -> GND
 ```
 
 Resultado:

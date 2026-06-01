@@ -31,9 +31,9 @@ idf.py flash monitor
 
 ## Estado
 
-- Etapa actual: prueba PWM con LED externo.
-- Objetivo: validar generacion PWM por LEDC antes de integrar el circuito analogico.
-- El PWM sale por `GPIO18`.
+- Etapa actual: prueba PWM con LED onboard.
+- Objetivo: validar generacion PWM por LEDC antes de pasar a protoboard.
+- El PWM sale por `GPIO2`, que corresponde al LED onboard en esta placa.
 
 ## Salida esperada
 
@@ -42,7 +42,7 @@ Una vez cargado el firmware:
 ```text
 Hola mundo desde ESP32-WROOM-32
 Proyecto: digitalizacion del experimento de efecto fotoelectrico
-PWM iniciado en GPIO 18, 1000 Hz, 10 bits
+PWM iniciado en GPIO 2, 1000 Hz, 10 bits
 Inicio prueba PWM
 Duty PWM: 0%
 Duty PWM: 25%
@@ -51,7 +51,9 @@ Duty PWM: 75%
 Duty PWM: 100%
 ```
 
-Conectar un LED externo en protoboard:
+Para esta etapa no hace falta conectar nada externo. El LED onboard debe cambiar de brillo siguiendo la secuencia de duty.
+
+Cuando esta prueba este validada, volveremos a usar un LED externo en protoboard:
 
 ```text
 GPIO18 -> resistencia 220/330 ohm -> anodo LED

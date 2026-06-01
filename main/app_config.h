@@ -1,7 +1,10 @@
 #pragma once
 
 // Pines preliminares para pruebas de banco. Ajustar antes de conectar hardware final.
-#define APP_PWM_GPIO        18
+#define APP_ONBOARD_LED_GPIO  2
+
+// Etapa actual: prueba PWM sobre LED onboard.
+#define APP_PWM_GPIO        APP_ONBOARD_LED_GPIO
 #define APP_MOTOR_DIR_GPIO  19
 #define APP_MOTOR_PWM_GPIO  21
 
@@ -10,5 +13,4 @@
 
 #define APP_TEST_DELAY_MS   1500
 
-#define APP_ONBOARD_LED_GPIO  2
 #define APP_STATUS_DELAY_MS   5000
