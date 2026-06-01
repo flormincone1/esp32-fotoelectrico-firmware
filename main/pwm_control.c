@@ -21,8 +21,6 @@ esp_err_t pwm_control_init(void)
         .duty_resolution = APP_PWM_RES_BITS,
         .timer_num = LEDC_TIMER_0,
         .freq_hz = APP_PWM_FREQ_HZ,
-        .clk_cfg = LEDC_AUTO_CLK,
-        .deconfigure = false,
     };
 
     esp_err_t err = ledc_timer_config(&timer_config);
@@ -34,11 +32,7 @@ esp_err_t pwm_control_init(void)
         .gpio_num = APP_PWM_GPIO,
         .speed_mode = LEDC_LOW_SPEED_MODE,
         .channel = LEDC_CHANNEL_0,
-        .intr_type = LEDC_INTR_DISABLE,
         .timer_sel = LEDC_TIMER_0,
-        .duty = 0,
-        .hpoint = 0,
-        .flags.output_invert = 0,
     };
 
     err = ledc_channel_config(&channel_config);

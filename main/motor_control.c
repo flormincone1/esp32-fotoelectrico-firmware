@@ -17,29 +17,17 @@ static uint32_t duty_max(void)
 
 esp_err_t motor_control_init(void)
 {
-    gpio_config_t dir_config = {
-        .pin_bit_mask = 1ULL << APP_MOTOR_DIR_GPIO,
-        .mode = GPIO_MODE_OUTPUT,
-        .pull_up_en = GPIO_PULLUP_DISABLE,
-        .pull_down_en = GPIO_PULLDOWN_DISABLE,
-        .intr_type = GPIO_INTR_DISABLE,
-    };
-
-    esp_err_t err = gpio_config(&dir_config);
-    if (err != ESP_OK) {
-        return err;
-    }
+    gpio_reset_pin(APP_MOTOR_DIR_GPIO);
+    gpio_set_direction(APP_MOTOR_DIR_GPIO, GPIO_MODE_OUTPUT);
 
     ledc_timer_config_t timer_config = {
         .speed_mode = LEDC_LOW_SPEED_MODE,
         .duty_resolution = APP_PWM_RES_BITS,
         .timer_num = LEDC_TIMER_1,
         .freq_hz = APP_PWM_FREQ_HZ,
-        .clk_cfg = LEDC_AUTO_CLK,
-        .deconfigure = false,
     };
 
-    err = ledc_timer_config(&timer_config);
+    esp_err_t err = ledc_timer_config(&timer_config);
     if (err != ESP_OK) {
         return err;
     }
@@ -48,11 +36,7 @@ esp_err_t motor_control_init(void)
         .gpio_num = APP_MOTOR_PWM_GPIO,
         .speed_mode = LEDC_LOW_SPEED_MODE,
         .channel = LEDC_CHANNEL_1,
-        .intr_type = LEDC_INTR_DISABLE,
         .timer_sel = LEDC_TIMER_1,
-        .duty = 0,
-        .hpoint = 0,
-        .flags.output_invert = 0,
     };
 
     err = ledc_channel_config(&channel_config);
