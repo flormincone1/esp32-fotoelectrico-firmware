@@ -13,12 +13,7 @@ GPIO18 -> resistencia 220/330 ohm -> LED -> GND
 Secuencia esperada:
 
 ```text
-pwm 0
-pwm 25
-pwm 50
-pwm 75
-pwm 100
-pwm_test
+0% -> 25% -> 50% -> 75% -> 100% -> 75% -> 50% -> 25% -> 0%
 ```
 
 Resultado:

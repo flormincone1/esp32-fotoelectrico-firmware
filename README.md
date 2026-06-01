@@ -31,9 +31,9 @@ idf.py flash monitor
 
 ## Estado
 
-- Etapa actual: hello world.
-- Objetivo: validar compilacion, carga y monitor serial antes de probar PWM.
-- Modulos PWM y motor ya existen en el repositorio, pero todavia no se ejecutan desde `app_main`.
+- Etapa actual: prueba PWM con LED externo.
+- Objetivo: validar generacion PWM por LEDC antes de integrar el circuito analogico.
+- El PWM sale por `GPIO18`.
 
 ## Salida esperada
 
@@ -42,10 +42,20 @@ Una vez cargado el firmware:
 ```text
 Hola mundo desde ESP32-WROOM-32
 Proyecto: digitalizacion del experimento de efecto fotoelectrico
-Blinky configurado en GPIO2
-Contador de vida: 0 | LED: ON
-Contador de vida: 1 | LED: OFF
-Contador de vida: 2 | LED: ON
+PWM iniciado en GPIO 18, 1000 Hz, 10 bits
+Inicio prueba PWM
+Duty PWM: 0%
+Duty PWM: 25%
+Duty PWM: 50%
+Duty PWM: 75%
+Duty PWM: 100%
 ```
 
-El contador cambia cada 5 segundos. Si esto aparece en el monitor serial y el LED onboard alterna, la placa, el puerto, el flasheo, la salida GPIO y la comunicacion basica estan funcionando.
+Conectar un LED externo en protoboard:
+
+```text
+GPIO18 -> resistencia 220/330 ohm -> anodo LED
+catodo LED -> GND
+```
+
+El brillo debe cambiar siguiendo la secuencia de duty.
