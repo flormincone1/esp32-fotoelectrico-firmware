@@ -20,23 +20,43 @@ Secuencia esperada:
 Resultado:
 
 ```text
-Pendiente de medir/probar.
+Validada como primera prueba de PWM.
 ```
 
 ## Prueba 1b - PWM con LED externo
 
 Objetivo: repetir la prueba PWM en protoboard luego de validar el LED onboard.
 
-Conexion sugerida:
+Conexion probada:
 
 ```text
-GPIO18 -> resistencia 220/330 ohm -> LED -> GND
+APP_PWM_GPIO -> resistencia 220/330 ohm -> LED -> GND
 ```
 
 Resultado:
 
 ```text
-Pendiente de medir/probar.
+Validada en protoboard. El LED cambio de brillo siguiendo el PWM.
+```
+
+## Prueba 1c - PWM con motor y transistor
+
+Objetivo: verificar que la salida PWM puede comandar un motor DC mediante una etapa de transistor.
+
+Conexion probada:
+
+```text
+APP_PWM_GPIO -> base del transistor
+motor entre colector y VCC
+diodo de freewheeling en paralelo con el motor
+emisor del transistor -> GND
+GND del ESP32 comun con la fuente del motor
+```
+
+Resultado:
+
+```text
+Validada en protoboard. El motor respondio al barrido de duty del PWM.
 ```
 
 ## Prueba 2 - Control de puente H simulado con LEDs

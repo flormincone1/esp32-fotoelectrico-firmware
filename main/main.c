@@ -9,6 +9,6 @@ void app_main(void)
 
     while (true) {
         pwm_control_test_sequence();
-        vTaskDelay(pdMS_TO_TICKS(1000));
+        vTaskDelay(pdMS_TO_TICKS(100));
     }
 }

@@ -56,20 +56,18 @@ esp_err_t pwm_control_set_duty_percent(uint8_t duty_percent)
     }
 
     err = ledc_update_duty(LEDC_LOW_SPEED_MODE, LEDC_CHANNEL_0);
-    if (err == ESP_OK) {
-        ESP_LOGI(TAG, "Duty PWM: %u%%", duty_percent);
-    }
     return err;
 }
 
 void pwm_control_test_sequence(void)
 {
-    const uint8_t steps[] = {0, 25, 50, 75, 100, 75, 50, 25, 0};
-
-    ESP_LOGI(TAG, "Inicio prueba PWM");
-    for (size_t i = 0; i < sizeof(steps) / sizeof(steps[0]); ++i) {
-        pwm_control_set_duty_percent(steps[i]);
+    for (uint8_t i = 0; i <= 100; ++i) {
+        pwm_control_set_duty_percent(i);
         vTaskDelay(pdMS_TO_TICKS(APP_TEST_DELAY_MS));
     }
-    ESP_LOGI(TAG, "Fin prueba PWM");
+
+    for (uint8_t i = 100; i > 0; --i) {
+        pwm_control_set_duty_percent(i);
+        vTaskDelay(pdMS_TO_TICKS(APP_TEST_DELAY_MS));
+    }
 }
