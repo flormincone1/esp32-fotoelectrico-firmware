@@ -1,14 +1,14 @@
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 
-#include "pwm_control.h"
+#include "tb6612_motor_test.h"
 
 void app_main(void)
 {
-    pwm_control_init();
+    tb6612_motor_test_init();
 
     while (true) {
-        pwm_control_test_sequence();
-        vTaskDelay(pdMS_TO_TICKS(100));
+        tb6612_motor_test_sequence();
+        vTaskDelay(pdMS_TO_TICKS(1000));
     }
 }

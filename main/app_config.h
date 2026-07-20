@@ -14,3 +14,13 @@
 #define APP_TEST_DELAY_MS   0
 
 #define APP_STATUS_DELAY_MS   5000
+
+// Prueba aparte para modulo TB6612FNG, canal A.
+#define TB6612_PWMA_GPIO       21
+#define TB6612_AIN1_GPIO       19
+#define TB6612_AIN2_GPIO       18
+#define TB6612_STBY_GPIO       23
+
+#define TB6612_PWM_FREQ_HZ     1000
+#define TB6612_PWM_RES_BITS    10
+#define TB6612_TEST_DELAY_MS   2000
