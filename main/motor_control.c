@@ -19,6 +19,7 @@ esp_err_t motor_control_init(void)
 {
     gpio_reset_pin(APP_MOTOR_DIR_GPIO);
     gpio_set_direction(APP_MOTOR_DIR_GPIO, GPIO_MODE_OUTPUT);
+    gpio_set_level(APP_MOTOR_DIR_GPIO, 0);
 
     ledc_timer_config_t timer_config = {
         .speed_mode = LEDC_LOW_SPEED_MODE,
@@ -88,21 +89,21 @@ void motor_control_test_sequence(void)
     ESP_LOGI(TAG, "Inicio prueba motor");
 
     motor_control_stop();
-    vTaskDelay(pdMS_TO_TICKS(1000));
+    vTaskDelay(pdMS_TO_TICKS(APP_MOTOR_TEST_STOP_MS));
 
     motor_control_set_direction(MOTOR_DIR_FORWARD);
-    motor_control_set_speed_percent(30);
-    vTaskDelay(pdMS_TO_TICKS(APP_TEST_DELAY_MS));
+    motor_control_set_speed_percent(APP_MOTOR_TEST_SPEED_PERCENT);
+    vTaskDelay(pdMS_TO_TICKS(APP_MOTOR_TEST_RUN_MS));
 
     motor_control_stop();
-    vTaskDelay(pdMS_TO_TICKS(1000));
+    vTaskDelay(pdMS_TO_TICKS(APP_MOTOR_TEST_STOP_MS));
 
     motor_control_set_direction(MOTOR_DIR_REVERSE);
-    motor_control_set_speed_percent(30);
-    vTaskDelay(pdMS_TO_TICKS(APP_TEST_DELAY_MS));
+    motor_control_set_speed_percent(APP_MOTOR_TEST_SPEED_PERCENT);
+    vTaskDelay(pdMS_TO_TICKS(APP_MOTOR_TEST_RUN_MS));
 
     motor_control_stop();
-    vTaskDelay(pdMS_TO_TICKS(1000));
+    vTaskDelay(pdMS_TO_TICKS(APP_MOTOR_TEST_STOP_MS));
 
     ESP_LOGI(TAG, "Fin prueba motor");
 }

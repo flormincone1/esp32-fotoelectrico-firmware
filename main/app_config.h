@@ -11,7 +11,11 @@
 #define APP_PWM_FREQ_HZ     500
 #define APP_PWM_RES_BITS    10
 
-#define APP_TEST_DELAY_MS   0
+#define APP_PWM_TEST_STEP_DELAY_MS  20
+
+#define APP_MOTOR_TEST_SPEED_PERCENT  30
+#define APP_MOTOR_TEST_RUN_MS          3000
+#define APP_MOTOR_TEST_STOP_MS         1000
 
 #define APP_STATUS_DELAY_MS   5000
 

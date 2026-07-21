@@ -1,14 +1,15 @@
+#include "esp_err.h"
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 
-#include "tb6612_motor_test.h"
+#include "motor_control.h"
 
 void app_main(void)
 {
-    tb6612_motor_test_init();
+    ESP_ERROR_CHECK(motor_control_init());
 
     while (true) {
-        tb6612_motor_test_sequence();
+        motor_control_test_sequence();
         vTaskDelay(pdMS_TO_TICKS(1000));
     }
 }

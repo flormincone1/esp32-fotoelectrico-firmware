@@ -63,11 +63,11 @@ void pwm_control_test_sequence(void)
 {
     for (uint8_t i = 0; i <= 100; ++i) {
         pwm_control_set_duty_percent(i);
-        vTaskDelay(pdMS_TO_TICKS(APP_TEST_DELAY_MS));
+        vTaskDelay(pdMS_TO_TICKS(APP_PWM_TEST_STEP_DELAY_MS));
     }
 
     for (uint8_t i = 100; i > 0; --i) {
         pwm_control_set_duty_percent(i);
-        vTaskDelay(pdMS_TO_TICKS(APP_TEST_DELAY_MS));
+        vTaskDelay(pdMS_TO_TICKS(APP_PWM_TEST_STEP_DELAY_MS));
     }
 }
