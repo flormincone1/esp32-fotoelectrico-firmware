@@ -5,6 +5,7 @@ idf_component_register(
         "pwm_control.c"
         "motor_control.c"
         "tb6612_motor_test.c"
+        "l293d_motor_test.c"
     INCLUDE_DIRS
         "."
 )
