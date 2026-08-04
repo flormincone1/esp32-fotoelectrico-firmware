@@ -1,15 +1,14 @@
-#include "esp_err.h"
-#include "freertos/FreeRTOS.h"
-#include "freertos/task.h"
+#include <stdbool.h>
 
-#include "l293d_motor_test.h"
+#include "esp_err.h"
+
+#include "motor_terminal_control.h"
 
 void app_main(void)
 {
-    ESP_ERROR_CHECK(l293d_motor_test_init());
+    ESP_ERROR_CHECK(motor_terminal_control_init());
 
     while (true) {
-        l293d_motor_test_sequence();
-        vTaskDelay(pdMS_TO_TICKS(1000));
+        motor_terminal_control_process();
     }
 }
