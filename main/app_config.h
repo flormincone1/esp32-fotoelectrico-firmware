@@ -36,6 +36,6 @@
 
 #define L293D_PWM_FREQ_HZ       500
 #define L293D_PWM_RES_BITS      10
-#define L293D_TEST_SPEED_PERCENT  30
-#define L293D_TEST_RUN_MS         3000
+#define L293D_TEST_SPEED_PERCENT  60
+#define L293D_TEST_RUN_MS         5000
 #define L293D_TEST_STOP_MS        1000
