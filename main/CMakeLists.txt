@@ -6,6 +6,12 @@ idf_component_register(
         "motor_control.c"
         "tb6612_motor_test.c"
         "l293d_motor_test.c"
+        "motor_terminal_control.c"
+        "dac_control.c"
     INCLUDE_DIRS
         "."
+    PRIV_REQUIRES
+        esp_driver_dac
+        esp_driver_gpio
+        esp_driver_ledc
 )

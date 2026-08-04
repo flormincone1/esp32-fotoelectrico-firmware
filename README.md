@@ -7,8 +7,9 @@ Firmware base para el proyecto de digitalizacion del experimento de efecto fotoe
 - Microcontrolador: ESP32-WROOM-32.
 - Framework: ESP-IDF.
 - Control PWM: periferico LEDC.
-- Prueba de motor actual: salida PWM hacia la base de un transistor, motor entre colector y VCC, con diodo de freewheeling.
-- Control motor previsto: pin `DIR` + pin `PWM` hacia el puente H.
+- Prueba de motor validada: motor DC controlado mediante L293D.
+- Control integrado: velocidad PWM y direccion desde la terminal serie.
+- Salida analogica: modulo para el DAC interno del ESP32 en GPIO25.
 
 ## Pines preliminares
 
@@ -17,6 +18,8 @@ Firmware base para el proyecto de digitalizacion del experimento de efecto fotoe
 | PWM general | `APP_PWM_GPIO` | Prueba de PWM con LED y transistor |
 | DIR motor | 19 | Sentido del puente H |
 | PWM motor | 21 | Velocidad/habilitacion del puente H |
+| IN2 motor | 18 | Segunda entrada de direccion del L293D |
+| DAC | 25 | Salida analogica del DAC interno, canal 0 |
 
 > Nota: estos pines son provisorios. Antes de conectar el puente H real, validar niveles electricos y ajustar `main/app_config.h`.
 
@@ -32,10 +35,12 @@ idf.py flash monitor
 
 ## Estado
 
-- Etapa actual: PWM validado en protoboard.
-- Resultado: el codigo PWM fue probado con un LED externo y tambien con un motor DC.
-- Conexion de motor probada: `APP_PWM_GPIO` conectado a la base del transistor, motor entre colector y VCC, y diodo de freewheeling en paralelo con el motor.
-- Objetivo siguiente: avanzar hacia el control de motor definitivo y validar el hardware final antes de integrar el puente H.
+- PWM validado con el LED onboard, un LED externo y un motor mediante transistor.
+- Control de motor con L293D validado en ambos sentidos y con detencion.
+- Integracion PWM + direccion por terminal compilada; validacion fisica pendiente.
+- Modulo DAC interno implementado en GPIO25; medicion fisica pendiente.
+
+Los resultados y conexiones de cada ensayo estan documentados en `docs/pruebas.md`.
 
 ## Salida esperada
 
