@@ -8,13 +8,9 @@ El objetivo final es ejecutar barridos reproducibles, reducir errores de operaci
 
 ## Arquitectura general
 
-```text
-Interfaz web -> Secuencia experimental -> PWM de LED
-                                    |-> Motor y cremallera
-                                    |-> DAC y potencial de frenado
+![Diagrama en bloques de la arquitectura general](docs/arquitectura-sistema.svg)
 
-Fotocelula -> Amplificador TIA -> ADC -> Procesamiento -> Interfaz web
-```
+[Abrir fuente editable en Excalidraw](docs/arquitectura-sistema.excalidraw).
 
 ## Etapas de desarrollo
 

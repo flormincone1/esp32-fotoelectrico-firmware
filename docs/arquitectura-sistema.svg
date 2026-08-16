@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="2140" height="1160" viewBox="0 0 2140 1160" role="img" aria-labelledby="diagram-title diagram-desc">
+<title id="diagram-title">Arquitectura general del experimento fotoelectrico con ESP32</title>
+<desc id="diagram-desc">Diagrama general del control, los actuadores, la optica y la cadena de medicion.</desc>
+<defs>
+<marker id="arrow-end" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L0,6 L9,3 z" fill="context-stroke"/></marker>
+<marker id="arrow-start" markerWidth="10" markerHeight="10" refX="1" refY="3" orient="auto-start-reverse" markerUnits="strokeWidth"><path d="M9,0 L9,6 L0,3 z" fill="context-stroke"/></marker>
+</defs>
+<rect width="2140" height="1160" fill="#f8fafc"/>
+<g stroke-linecap="round" stroke-linejoin="round"><rect x="70" y="230" width="300" height="155" rx="10" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+<rect x="460" y="200" width="480" height="650" rx="10" fill="#eff6ff" stroke="#1d4ed8" stroke-width="3"/>
+<rect x="510" y="310" width="380" height="72" rx="10" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+<rect x="510" y="425" width="170" height="105" rx="10" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+<rect x="720" y="425" width="170" height="105" rx="10" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+<rect x="510" y="575" width="170" height="105" rx="10" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
+<rect x="720" y="575" width="170" height="105" rx="10" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+<rect x="510" y="725" width="380" height="85" rx="10" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+<rect x="1040" y="235" width="280" height="115" rx="10" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
+<rect x="1810" y="235" width="260" height="115" rx="10" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
+<rect x="1040" y="445" width="280" height="115" rx="10" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
+<rect x="1435" y="445" width="300" height="115" rx="10" fill="#ffedd5" stroke="#c2410c" stroke-width="2"/>
+<rect x="1810" y="445" width="260" height="115" rx="10" fill="#ffedd5" stroke="#c2410c" stroke-width="2"/>
+<rect x="1040" y="650" width="280" height="115" rx="10" fill="#dcfce7" stroke="#15803d" stroke-width="2"/>
+<rect x="1435" y="650" width="300" height="115" rx="10" fill="#dcfce7" stroke="#15803d" stroke-width="2"/>
+<rect x="1810" y="800" width="260" height="115" rx="10" fill="#dcfce7" stroke="#15803d" stroke-width="2"/>
+<rect x="1435" y="800" width="300" height="115" rx="10" fill="#dcfce7" stroke="#15803d" stroke-width="2"/>
+<polyline points="370,305 460,305" fill="none" stroke="#2563eb" stroke-width="2" marker-start="url(#arrow-start)" marker-end="url(#arrow-end)"/>
+<polyline points="595,425 595,400 970,400 970,292 1040,292" fill="none" stroke="#d97706" stroke-width="2" marker-start="none" marker-end="url(#arrow-end)"/>
+<polyline points="1320,292 1810,292" fill="none" stroke="#d97706" stroke-width="2" marker-start="none" marker-end="url(#arrow-end)"/>
+<polyline points="890,478 1040,502" fill="none" stroke="#d97706" stroke-width="2" marker-start="none" marker-end="url(#arrow-end)"/>
+<polyline points="1320,502 1435,502" fill="none" stroke="#c2410c" stroke-width="2" marker-start="none" marker-end="url(#arrow-end)"/>
+<polyline points="1735,502 1810,502" fill="none" stroke="#c2410c" stroke-width="2" marker-start="none" marker-end="url(#arrow-end)"/>
+<polyline points="1940,445 1940,350" fill="none" stroke="#c2410c" stroke-width="2" marker-start="none" marker-end="url(#arrow-end)"/>
+<polyline points="595,680 595,700 960,700 1040,707" fill="none" stroke="#15803d" stroke-width="2" marker-start="none" marker-end="url(#arrow-end)"/>
+<polyline points="1320,707 1435,707" fill="none" stroke="#15803d" stroke-width="2" marker-start="none" marker-end="url(#arrow-end)"/>
+<polyline points="1735,707 1940,707 1940,800" fill="none" stroke="#15803d" stroke-width="2" marker-start="none" marker-end="url(#arrow-end)"/>
+<polyline points="2070,292 2100,292 2100,857 2070,857" fill="none" stroke="#ca8a04" stroke-width="3" marker-start="none" marker-end="url(#arrow-end)"/>
+<polyline points="1810,857 1735,857" fill="none" stroke="#15803d" stroke-width="2" marker-start="none" marker-end="url(#arrow-end)"/>
+<polyline points="1435,857 980,857 980,628 890,628" fill="none" stroke="#15803d" stroke-width="2" marker-start="none" marker-end="url(#arrow-end)"/>
+<polyline points="805,680 805,725" fill="none" stroke="#2563eb" stroke-width="2" marker-start="none" marker-end="url(#arrow-end)"/>
+<rect x="70" y="930" width="800" height="105" rx="10" fill="#ffffff" stroke="#cbd5e1" stroke-width="1"/>
+<rect x="100" y="990" width="28" height="22" rx="10" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+<rect x="310" y="990" width="28" height="22" rx="10" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
+<rect x="550" y="990" width="28" height="22" rx="10" fill="#dcfce7" stroke="#15803d" stroke-width="2"/></g>
+<g><text x="70" y="79.25" text-anchor="start" font-family="Arial, sans-serif" font-size="38" fill="#0f172a" font-weight="700"><tspan x="70" dy="0">Arquitectura del sistema - Experimento fotoelectrico</tspan></text>
+<text x="70" y="118.125" text-anchor="start" font-family="Arial, sans-serif" font-size="19" fill="#475569" font-weight="600"><tspan x="70" dy="0">Control, actuacion, medicion y presentacion de resultados con ESP32</tspan></text>
+<text x="220" y="179.625" text-anchor="middle" font-family="Arial, sans-serif" font-size="15" fill="#2563eb" font-weight="600"><tspan x="220" dy="0">OPERACION</tspan></text>
+<text x="700" y="179.625" text-anchor="middle" font-family="Arial, sans-serif" font-size="15" fill="#2563eb" font-weight="600"><tspan x="700" dy="0">CONTROL DIGITAL</tspan></text>
+<text x="1555" y="179.625" text-anchor="middle" font-family="Arial, sans-serif" font-size="15" fill="#d97706" font-weight="600"><tspan x="1555" dy="0">PLANTA EXPERIMENTAL</tspan></text>
+<text x="220" y="286.5" text-anchor="middle" font-family="Arial, sans-serif" font-size="24" fill="#0f172a" font-weight="600"><tspan x="220" dy="0">Interfaz web</tspan><tspan x="220" dy="30">Wi-Fi</tspan><tspan x="220" dy="30">Control y resultados</tspan></text>
+<text x="700" y="255.25" text-anchor="middle" font-family="Arial, sans-serif" font-size="30" fill="#1e3a8a" font-weight="700"><tspan x="700" dy="0">ESP32-WROOM-32</tspan></text>
+<text x="700" y="354.25" text-anchor="middle" font-family="Arial, sans-serif" font-size="22" fill="#0f172a" font-weight="600"><tspan x="700" dy="0">Coordinacion</tspan></text>
+<text x="595" y="484.875" text-anchor="middle" font-family="Arial, sans-serif" font-size="21" fill="#0f172a" font-weight="600"><tspan x="595" dy="0">Control PWM</tspan></text>
+<text x="805" y="484.875" text-anchor="middle" font-family="Arial, sans-serif" font-size="21" fill="#0f172a" font-weight="600"><tspan x="805" dy="0">Control motor</tspan></text>
+<text x="595" y="634.875" text-anchor="middle" font-family="Arial, sans-serif" font-size="21" fill="#0f172a" font-weight="600"><tspan x="595" dy="0">DAC</tspan></text>
+<text x="805" y="634.875" text-anchor="middle" font-family="Arial, sans-serif" font-size="21" fill="#0f172a" font-weight="600"><tspan x="805" dy="0">ADC</tspan></text>
+<text x="700" y="775.875" text-anchor="middle" font-family="Arial, sans-serif" font-size="21" fill="#0f172a" font-weight="600"><tspan x="700" dy="0">Secuencia experimental</tspan></text>
+<text x="1180" y="287" text-anchor="middle" font-family="Arial, sans-serif" font-size="22" fill="#0f172a" font-weight="600"><tspan x="1180" dy="0">Etapa de potencia PWM</tspan><tspan x="1180" dy="27.5">PMOS</tspan></text>
+<text x="1940" y="275.5" text-anchor="middle" font-family="Arial, sans-serif" font-size="20" fill="#0f172a" font-weight="600"><tspan x="1940" dy="0">Banco de emisores</tspan><tspan x="1940" dy="25">UV / Azul / Verde</tspan><tspan x="1940" dy="25">Rojo / Infrarrojo</tspan></text>
+<text x="1180" y="497" text-anchor="middle" font-family="Arial, sans-serif" font-size="22" fill="#0f172a" font-weight="600"><tspan x="1180" dy="0">Puente H</tspan><tspan x="1180" dy="27.5">Etapa de potencia</tspan></text>
+<text x="1585" y="497" text-anchor="middle" font-family="Arial, sans-serif" font-size="22" fill="#0f172a" font-weight="600"><tspan x="1585" dy="0">Motor DC</tspan><tspan x="1585" dy="27.5">Movimiento bidireccional</tspan></text>
+<text x="1940" y="485.5" text-anchor="middle" font-family="Arial, sans-serif" font-size="20" fill="#0f172a" font-weight="600"><tspan x="1940" dy="0">Cremallera</tspan><tspan x="1940" dy="25">Selector de LED</tspan><tspan x="1940" dy="25">Homing y limites</tspan></text>
+<text x="1180" y="702.25" text-anchor="middle" font-family="Arial, sans-serif" font-size="21" fill="#0f172a" font-weight="600"><tspan x="1180" dy="0">Adaptacion analogica</tspan><tspan x="1180" dy="26.25">Rango y polaridad</tspan></text>
+<text x="1585" y="702" text-anchor="middle" font-family="Arial, sans-serif" font-size="22" fill="#0f172a" font-weight="600"><tspan x="1585" dy="0">Potencial de frenado</tspan><tspan x="1585" dy="27.5">Barrido controlado</tspan></text>
+<text x="1940" y="852" text-anchor="middle" font-family="Arial, sans-serif" font-size="22" fill="#0f172a" font-weight="600"><tspan x="1940" dy="0">Fotocelula</tspan><tspan x="1940" dy="27.5">Corriente fotoelectrica</tspan></text>
+<text x="1585" y="852" text-anchor="middle" font-family="Arial, sans-serif" font-size="22" fill="#0f172a" font-weight="600"><tspan x="1585" dy="0">Amplificador TIA</tspan><tspan x="1585" dy="27.5">Corriente a tension</tspan></text>
+<text x="95" y="966.125" text-anchor="start" font-family="Arial, sans-serif" font-size="19" fill="#0f172a" font-weight="600"><tspan x="95" dy="0">Referencias</tspan></text>
+<text x="215" y="1004.625" text-anchor="middle" font-family="Arial, sans-serif" font-size="15" fill="#475569" font-weight="600"><tspan x="215" dy="0">Control digital</tspan></text>
+<text x="437.5" y="1004.625" text-anchor="middle" font-family="Arial, sans-serif" font-size="15" fill="#475569" font-weight="600"><tspan x="437.5" dy="0">Potencia / actuacion</tspan></text>
+<text x="685" y="1004.625" text-anchor="middle" font-family="Arial, sans-serif" font-size="15" fill="#475569" font-weight="600"><tspan x="685" dy="0">Medicion analogica</tspan></text></g>
+</svg>
