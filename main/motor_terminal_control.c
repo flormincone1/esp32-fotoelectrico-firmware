@@ -13,11 +13,14 @@
 
 #include "app_config.h"
 #include "motor_terminal_config.h"
+#include "pwm_control.h"
 
 static const char *TAG = "motor_terminal";
 
-static uint8_t speed_percent;
-static bool direction_forward = true;
+static uint8_t led_intensity_percent;
+static bool next_direction_forward = true;
+static bool motor_running;
+static TickType_t motor_stop_tick;
 
 static uint32_t duty_max(void)
 {
@@ -36,7 +39,7 @@ static esp_err_t motor_set_speed(uint8_t percent)
     return ledc_update_duty(LEDC_LOW_SPEED_MODE, LEDC_CHANNEL_3);
 }
 
-static void motor_set_direction_pins(void)
+static void motor_set_direction(bool direction_forward)
 {
     gpio_set_level(L293D_IN1_GPIO, direction_forward ? 1 : 0);
     gpio_set_level(L293D_IN2_GPIO, direction_forward ? 0 : 1);
@@ -47,82 +50,81 @@ static void motor_stop(void)
     ESP_ERROR_CHECK(motor_set_speed(0));
     gpio_set_level(L293D_IN1_GPIO, 0);
     gpio_set_level(L293D_IN2_GPIO, 0);
+    motor_running = false;
 }
 
-static void motor_apply_state(void)
+static void motor_start_move(void)
 {
-    if (speed_percent == 0) {
+    if (motor_running) {
         motor_stop();
-        return;
+        vTaskDelay(pdMS_TO_TICKS(MOTOR_DIRECTION_CHANGE_DELAY_MS));
     }
 
-    motor_set_direction_pins();
-    ESP_ERROR_CHECK(motor_set_speed(speed_percent));
+    motor_set_direction(next_direction_forward);
+    ESP_ERROR_CHECK(motor_set_speed(L293D_TEST_SPEED_PERCENT));
+
+    motor_running = true;
+    motor_stop_tick = xTaskGetTickCount() + pdMS_TO_TICKS(L293D_TEST_RUN_MS);
+
+    ESP_LOGI(TAG, "Motor %s: %d%% durante %d ms",
+             next_direction_forward ? "adelante" : "atras",
+             L293D_TEST_SPEED_PERCENT,
+             L293D_TEST_RUN_MS);
+
+    next_direction_forward = !next_direction_forward;
 }
 
-static void log_state(void)
+static void motor_update(void)
 {
-    ESP_LOGI(TAG, "Velocidad: %u%% | Direccion: %s",
-             speed_percent,
-             direction_forward ? "adelante" : "atras");
+    if (motor_running && (int32_t)(xTaskGetTickCount() - motor_stop_tick) >= 0) {
+        motor_stop();
+        ESP_LOGI(TAG, "Motor detenido: movimiento finalizado");
+    }
 }
 
-static void increase_speed(void)
+static void increase_led_intensity(void)
 {
-    if (speed_percent <= 100 - MOTOR_TERMINAL_SPEED_STEP_PERCENT) {
-        speed_percent += MOTOR_TERMINAL_SPEED_STEP_PERCENT;
+    if (led_intensity_percent <= 100 - LED_PWM_STEP_PERCENT) {
+        led_intensity_percent += LED_PWM_STEP_PERCENT;
     } else {
-        speed_percent = 100;
+        led_intensity_percent = 100;
     }
 
-    motor_apply_state();
-    log_state();
+    ESP_ERROR_CHECK(pwm_control_set_duty_percent(led_intensity_percent));
+    ESP_LOGI(TAG, "Intensidad LED: %u%%", led_intensity_percent);
 }
 
-static void decrease_speed(void)
+static void decrease_led_intensity(void)
 {
-    if (speed_percent >= MOTOR_TERMINAL_SPEED_STEP_PERCENT) {
-        speed_percent -= MOTOR_TERMINAL_SPEED_STEP_PERCENT;
+    if (led_intensity_percent >= LED_PWM_STEP_PERCENT) {
+        led_intensity_percent -= LED_PWM_STEP_PERCENT;
     } else {
-        speed_percent = 0;
+        led_intensity_percent = 0;
     }
 
-    motor_apply_state();
-    log_state();
-}
-
-static void toggle_direction(void)
-{
-    if (speed_percent > 0) {
-        ESP_ERROR_CHECK(motor_set_speed(0));
-        vTaskDelay(pdMS_TO_TICKS(MOTOR_TERMINAL_REVERSE_DELAY_MS));
-    }
-
-    direction_forward = !direction_forward;
-    motor_apply_state();
-    log_state();
+    ESP_ERROR_CHECK(pwm_control_set_duty_percent(led_intensity_percent));
+    ESP_LOGI(TAG, "Intensidad LED: %u%%", led_intensity_percent);
 }
 
 static void handle_key(char key)
 {
     switch (key) {
     case '+':
-        increase_speed();
+        increase_led_intensity();
         break;
 
     case '-':
-        decrease_speed();
+        decrease_led_intensity();
         break;
 
     case ' ':
-        toggle_direction();
+        motor_start_move();
         break;
 
     case 's':
     case 'S':
-        speed_percent = 0;
         motor_stop();
-        ESP_LOGI(TAG, "Motor detenido");
+        ESP_LOGI(TAG, "Motor detenido por el usuario");
         break;
 
     default:
@@ -132,6 +134,16 @@ static void handle_key(char key)
 
 esp_err_t motor_terminal_control_init(void)
 {
+    esp_err_t err = pwm_control_init();
+    if (err != ESP_OK) {
+        return err;
+    }
+
+    err = pwm_control_set_duty_percent(0);
+    if (err != ESP_OK) {
+        return err;
+    }
+
     gpio_reset_pin(L293D_IN1_GPIO);
     gpio_reset_pin(L293D_IN2_GPIO);
     gpio_set_direction(L293D_IN1_GPIO, GPIO_MODE_OUTPUT);
@@ -146,7 +158,7 @@ esp_err_t motor_terminal_control_init(void)
         .freq_hz = L293D_PWM_FREQ_HZ,
     };
 
-    esp_err_t err = ledc_timer_config(&timer_config);
+    err = ledc_timer_config(&timer_config);
     if (err != ESP_OK) {
         return err;
     }
@@ -167,12 +179,15 @@ esp_err_t motor_terminal_control_init(void)
         return ESP_FAIL;
     }
 
-    speed_percent = 0;
-    direction_forward = true;
+    led_intensity_percent = 0;
+    next_direction_forward = true;
     motor_stop();
 
-    ESP_LOGI(TAG, "Control listo: +5%% | -5%% | ESPACIO cambia direccion | S detiene");
-    log_state();
+    ESP_LOGI(TAG, "+/- intensidad LED en pasos de %d%%", LED_PWM_STEP_PERCENT);
+    ESP_LOGI(TAG, "ESPACIO mueve el motor %d ms al %d%% y alterna direccion",
+             L293D_TEST_RUN_MS,
+             L293D_TEST_SPEED_PERCENT);
+    ESP_LOGI(TAG, "S detiene el motor");
 
     return ESP_OK;
 }
@@ -185,5 +200,6 @@ void motor_terminal_control_process(void)
         handle_key(key);
     }
 
+    motor_update();
     vTaskDelay(pdMS_TO_TICKS(MOTOR_TERMINAL_POLL_DELAY_MS));
 }
