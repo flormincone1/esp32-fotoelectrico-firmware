@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Efecto fotoeléctrico - UTN FRA</title>
+<style>
+  body { font-family: sans-serif; margin: 0; background: #f4f6f8; color: #1d2733; }
+  header { background: #1d4e89; color: white; padding: 12px 16px; }
+  header h1 { margin: 0; font-size: 20px; }
+  main { max-width: 1000px; margin: auto; padding: 12px; }
+  section { background: white; border-radius: 8px; padding: 12px 16px; margin-bottom: 12px; }
+  h2 { font-size: 16px; margin: 0 0 8px; }
+  button { padding: 8px 12px; margin: 3px; border: 1px solid #1d4e89; background: white;
+           color: #1d4e89; border-radius: 6px; cursor: pointer; font-size: 14px; }
+  button.principal { background: #1d4e89; color: white; }
+  button.detener { background: #c62828; border-color: #c62828; color: white; font-weight: bold; }
+  table { border-collapse: collapse; width: 100%; font-size: 14px; }
+  th, td { border-bottom: 1px solid #dde3ea; padding: 6px; text-align: center; }
+  .datos { display: flex; flex-wrap: wrap; gap: 16px; font-size: 15px; }
+  .datos b { color: #1d4e89; }
+  .error { color: #c62828; font-weight: bold; }
+  canvas { width: 100%; height: 320px; border: 1px solid #dde3ea; border-radius: 6px; }
+  label { margin-right: 8px; }
+  input[type=range] { width: 220px; vertical-align: middle; }
+</style>
+</head>
+<body>
+<header><h1>Efecto fotoeléctrico &mdash; Física Electrónica, UTN FRA</h1></header>
+<main>
+
+<section>
+  <h2>Estado</h2>
+  <div class="datos">
+    <span>Estado: <b id="estado">-</b></span>
+    <span>LED en posición: <b id="led">-</b></span>
+    <span>U: <b id="u">-</b> V</span>
+    <span>I: <b id="i">-</b> nA</span>
+    <span>Home: <b id="home">-</b></span>
+    <span>Progreso: <b id="progreso">-</b></span>
+  </div>
+  <p id="mensaje"></p>
+  <button class="detener" onclick="comando('detener')">DETENER</button>
+</section>
+
+<section>
+  <h2>Experimento</h2>
+  <button class="principal" onclick="comando('experimento')">Medir todos los LED y calcular h</button>
+  <button onclick="comando('homing')">Homing</button>
+  <div id="botones_led"></div>
+</section>
+
+<section>
+  <h2>Control manual</h2>
+  <p>
+    <label>Intensidad LED: <b id="intensidad_txt">0</b> %</label>
+    <input type="range" id="intensidad" min="0" max="100" step="5" value="0"
+           onchange="comando('intensidad', this.value)">
+  </p>
+  <p>
+    <label>DAC de frenado: <b id="frenado_txt">0</b> mV</label>
+    <input type="range" id="frenado" min="0" max="3300" step="25" value="0"
+           onchange="comando('frenado', this.value)">
+  </p>
+  <p>
+    <button onclick="comando('pulso_hacia_home', 200)">&larr; Pulso hacia home</button>
+    <button onclick="comando('pulso_desde_home', 200)">Pulso desde home &rarr;</button>
+    <button onclick="comando('curva')">Medir curva del LED en posición</button>
+  </p>
+  <p id="botones_manual">LED colocado a mano: </p>
+</section>
+
+<section>
+  <h2>Resultados</h2>
+  <table>
+    <thead><tr><th>LED</th><th>&lambda; [nm]</th><th>f [THz]</th><th>I oscura [nA]</th><th>U<sub>0</sub> [V]</th></tr></thead>
+    <tbody id="tabla"></tbody>
+  </table>
+  <p id="planck"></p>
+  <button onclick="cargarResultados()">Actualizar</button>
+  <a href="/api/resultados.csv"><button>Descargar CSV</button></a>
+</section>
+
+<section>
+  <h2>Curvas I&ndash;U</h2>
+  <canvas id="grafico_iv"></canvas>
+</section>
+
+<section>
+  <h2>Potencial de corte en función de la frecuencia</h2>
+  <canvas id="grafico_planck"></canvas>
+</section>
+
+</main>
+
+<script>
+const COLORES = ['#6a1b9a', '#1565c0', '#2e7d32', '#e65100', '#757575'];
+const LONGITUDES = [395, 470, 525, 625, 850];
+let ultimoEstado = '';
+
+// Botones de cada LED
+LONGITUDES.forEach((lambda, n) => {
+  document.getElementById('botones_led').innerHTML +=
+    `<button onclick="comando('ir_led', ${n})">Ir a LED ${n + 1} (${lambda} nm)</button>` +
+    `<button onclick="comando('medir_led', ${n})">Medir LED ${n + 1}</button><br>`;
+  document.getElementById('botones_manual').innerHTML +=
+    `<button onclick="comando('posicion_manual', ${n})">${n + 1}</button>`;
+});
+
+function comando(accion, valor = 0) {
+  fetch(`/api/comando?accion=${accion}&valor=${valor}`, { method: 'POST' });
+}
+
+// Estado en vivo, una vez por segundo
+async function actualizarEstado() {
+  try {
+    const e = await (await fetch('/api/estado')).json();
+    document.getElementById('estado').textContent = e.estado;
+    document.getElementById('estado').className = e.estado === 'Error' ? 'error' : '';
+    document.getElementById('mensaje').textContent = e.mensaje;
+    document.getElementById('led').textContent = e.led >= 0 ? `${e.led + 1} (${LONGITUDES[e.led]} nm)` : '?';
+    document.getElementById('u').textContent = e.u.toFixed(3);
+    document.getElementById('i').textContent = e.i.toFixed(3);
+    document.getElementById('home').textContent = e.home ? 'sí' : 'no';
+    document.getElementById('progreso').textContent = e.estado === 'Midiendo' ? `${e.punto} / ${e.puntos}` : '-';
+    document.getElementById('intensidad_txt').textContent = e.intensidad;
+    document.getElementById('frenado_txt').textContent = e.frenado_mv;
+    // Los deslizadores siguen el valor real, salvo mientras el usuario los mueve
+    const intensidad = document.getElementById('intensidad');
+    const frenado = document.getElementById('frenado');
+    if (document.activeElement !== intensidad) intensidad.value = e.intensidad;
+    if (document.activeElement !== frenado) frenado.value = e.frenado_mv;
+
+    // Al terminar una medicion se recargan los resultados
+    if (ultimoEstado === 'Midiendo' && e.estado !== 'Midiendo') cargarResultados();
+    ultimoEstado = e.estado;
+  } catch (error) {
+    document.getElementById('estado').textContent = 'sin conexión';
+  }
+}
+
+async function cargarResultados() {
+  const r = await (await fetch('/api/resultados')).json();
+
+  // Tabla
+  const textoCorte = { ok: null, sin_fotoemision: 'sin fotoemisión', fuera_de_rango: 'fuera de rango' };
+  document.getElementById('tabla').innerHTML = r.curvas.map((c, n) => `<tr>
+      <td style="color:${COLORES[n]}">&#9632; ${n + 1}</td><td>${c.lambda}</td><td>${c.f_thz.toFixed(1)}</td>
+      <td>${c.medida ? c.oscura.toFixed(3) : '-'}</td>
+      <td>${!c.medida ? 'sin medir' : (textoCorte[c.corte] || c.u0.toFixed(3))}</td></tr>`).join('');
+
+  // Constante de Planck
+  const a = r.ajuste;
+  document.getElementById('planck').innerHTML = a.valido
+    ? `<b>h = ${a.h.toExponential(4)} &plusmn; ${a.u_h.toExponential(1)} J&middot;s</b>
+       (${a.n} LED, error vs. referencia ${((a.h - 6.62607015e-34) / 6.62607015e-34 * 100).toFixed(1)} %)
+       &mdash; W = ${a.w_ev.toFixed(3)} eV &mdash; R&sup2; = ${a.r2.toFixed(4)}`
+    : 'h: hacen falta al menos 2 LED con potencial de corte.';
+
+  // Grafico I-U
+  const series = r.curvas.map((c, n) => ({ color: COLORES[n], puntos: c.puntos, linea: true }));
+  graficar('grafico_iv', series, 'U [V]', 'I [nA]');
+
+  // Grafico U0-f con la recta ajustada
+  const validos = r.curvas.filter(c => c.medida && c.corte === 'ok');
+  const puntos = validos.map(c => [c.f_thz, c.u0]);
+  const seriesPlanck = [{ color: '#1d4e89', puntos: puntos, linea: false }];
+  if (a.valido) {
+    const e = 1.602176634e-19;
+    const recta = f => a.h / e * f * 1e12 - a.w_ev;
+    const fs = puntos.map(p => p[0]);
+    const fMin = Math.min(...fs), fMax = Math.max(...fs);
+    seriesPlanck.push({ color: '#c62828', puntos: [[fMin, recta(fMin)], [fMax, recta(fMax)]], linea: true });
+  }
+  graficar('grafico_planck', seriesPlanck, 'f [THz]', 'U0 [V]');
+}
+
+// Grafico x-y simple dibujado en un canvas
+function graficar(id, series, tituloX, tituloY) {
+  const canvas = document.getElementById(id);
+  canvas.width = canvas.clientWidth;
+  canvas.height = canvas.clientHeight;
+  const ctx = canvas.getContext('2d');
+  const m = 50;   // margen para los ejes
+  const W = canvas.width - 2 * m, H = canvas.height - 2 * m;
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  const todos = series.flatMap(s => s.puntos);
+  if (todos.length === 0) { ctx.fillText('Sin datos', m, m); return; }
+  let xMin = Math.min(...todos.map(p => p[0])), xMax = Math.max(...todos.map(p => p[0]));
+  let yMin = Math.min(0, ...todos.map(p => p[1])), yMax = Math.max(...todos.map(p => p[1]));
+  if (xMax === xMin) xMax = xMin + 1;
+  if (yMax === yMin) yMax = yMin + 1;
+  const px = x => m + (x - xMin) / (xMax - xMin) * W;
+  const py = y => m + H - (y - yMin) / (yMax - yMin) * H;
+
+  // Ejes y divisiones
+  ctx.strokeStyle = '#999'; ctx.fillStyle = '#333'; ctx.font = '12px sans-serif';
+  ctx.strokeRect(m, m, W, H);
+  for (let k = 0; k <= 5; k++) {
+    const x = xMin + k * (xMax - xMin) / 5, y = yMin + k * (yMax - yMin) / 5;
+    ctx.fillText(x.toFixed(2), px(x) - 12, m + H + 16);
+    ctx.fillText(y.toFixed(2), 4, py(y) + 4);
+  }
+  ctx.fillText(tituloX, m + W / 2, canvas.height - 8);
+  ctx.fillText(tituloY, 4, m - 12);
+
+  // Series
+  series.forEach(s => {
+    ctx.strokeStyle = s.color; ctx.fillStyle = s.color; ctx.lineWidth = 2;
+    if (s.linea) {
+      ctx.beginPath();
+      s.puntos.forEach((p, k) => k === 0 ? ctx.moveTo(px(p[0]), py(p[1])) : ctx.lineTo(px(p[0]), py(p[1])));
+      ctx.stroke();
+    } else {
+      s.puntos.forEach(p => { ctx.beginPath(); ctx.arc(px(p[0]), py(p[1]), 5, 0, 2 * Math.PI); ctx.fill(); });
+    }
+  });
+}
+
+setInterval(actualizarEstado, 1000);
+actualizarEstado();
+cargarResultados();
+</script>
+</body>
+</html>

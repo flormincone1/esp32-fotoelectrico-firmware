@@ -1,1 +1,4 @@
 CONFIG_ESPTOOLPY_FLASHSIZE_4MB=y
+
+# Particion de aplicacion de 1,5 MB (el firmware con Wi-Fi ocupa ~850 kB)
+CONFIG_PARTITION_TABLE_SINGLE_APP_LARGE=y

@@ -1,17 +1,29 @@
 idf_component_register(
     SRCS
         "main.c"
-        "system_status.c"
-        "pwm_control.c"
-        "motor_control.c"
-        "tb6612_motor_test.c"
-        "l293d_motor_test.c"
-        "motor_terminal_control.c"
-        "dac_control.c"
+        "led.c"
+        "motor.c"
+        "cremallera.c"
+        "frenado.c"
+        "medicion.c"
+        "calculo.c"
+        "experimento.c"
+        "terminal.c"
+        "wifi_ap.c"
+        "servidor_web.c"
     INCLUDE_DIRS
         "."
+    EMBED_TXTFILES
+        "web/index.html"
     PRIV_REQUIRES
-        esp_driver_dac
         esp_driver_gpio
         esp_driver_ledc
+        esp_driver_dac
+        esp_driver_uart
+        esp_adc
+        esp_wifi
+        esp_netif
+        esp_event
+        esp_http_server
+        nvs_flash
 )
