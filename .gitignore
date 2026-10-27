@@ -14,3 +14,6 @@ sdkconfig.old
 *.swp
 Thumbs.db
 Desktop.ini
+
+# Binario de la prueba en PC
+test/test_calculo
